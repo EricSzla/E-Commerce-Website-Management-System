@@ -22,7 +22,7 @@ void backup(char * sourceFile, char * targetFile){
 //	printf("Concat time:%s\n",buff_time);
 //	printf("Target: %s\n",targetFile);
 //	printf("Source: %s\n", sourceFile);
-//	strcat(targetFile, buff_time);
+	strcat(targetFile, buff_time);
 //	printf("Copying\n");
 	char *args[] = {"cp","-R", sourceFile, targetFile, NULL}; // args for copy command e.g. cp -R source.txt dest.txt
 	if(!vfork()){
@@ -38,7 +38,10 @@ void update(char * sourceFile, char* targetFile){
 	lockFiles(sourceFile);
 	isLocked = 1;
 	char *args[] = {"cp", "-R", sourceFile, targetFile, NULL};
-	execv("/bin/cp", args);
+	printf("backup.c(update): %s\n",sourceFile);
+	if(!vfork()){
+		execv("/bin/cp", args);
+	}
 	printf("Live version updated.\n");
 	unlockFiles(sourceFile);
 	isLocked = 0;

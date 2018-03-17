@@ -5,3 +5,13 @@ User: eryk
 Event: Modified
 File: index.html
 User: eryk
+
+Event: Modified
+File: index.html
+User: eryk
+Event: Modified
+File: updateProducts.js
+User: eryk
+Event: Modified
+File: updateProducts.js
+User: eryk

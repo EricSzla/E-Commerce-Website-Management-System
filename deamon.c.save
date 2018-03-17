@@ -24,98 +24,86 @@ int main(){
 // will initialize the start of uploading the intranet site to the live folder
 // after it have finished with the back-up
 static void back_up_daemon(){
+	//printf("Setting up deamon...\n");
 	time_t now;
 	struct tm *nightTime;
 	double seconds;
+	//printf("deamon.c: setting time\n");
 	time(&now);
+	//printf("deamon.c: current time set\n");
 	nightTime = localtime(&now);
-	nightTime->tm_hour = 22;
-	nightTime->tm_min = 50;
-	nightTime->tm_sec = 0;
+	//printf("deamon.c: nightTime set\n");
+	nightTime->tm_hour = 19;
+	nightTime->tm_min = 46;
+	nightTime->tm_sec = 5;
 
+	//double test; 
+	//test = difftime(now,mktime(nightTime));
+	//printf("Time difference: %1.1f\n",test);
 	pid_t pid;
+	//printf("deamon.c: before 1st fork\n");
 	pid = fork(); // Fork
-	//printf("deamon.c: after 1st fork\n");
+	printf("deamon.c: after 1st fork\n");
 	if(pid < 0){
-		//printf("Deamon.c : Error pid < 0.\n");
-		logError(getlogin(),"Deamon.c: (pid<0)");
+		printf("Deamon.c : Error pid < 0.\n");
 		// Error have occured
 		exit(EXIT_FAILURE);
 	}
 
 	if(pid > 0){
 		// Parent process
-		//printf("\nKilling the parent.\n");
+		printf("\nKilling the parent.\n");
 		exit(EXIT_SUCCESS);
 	}
 
 	if(setsid() < 0){
-		logError(getlogin(),"Deamon.c: (Error setsid() < 0)");
+		printf("\nDeamon.c: Error setsid() < 0\n");
 		exit(EXIT_FAILURE);
 	}
 
 	pid = fork();
 	if(pid > 0){
-		//printf("\nStarting monitor deamon.\n");
+		printf("\nStarting monitor deamon.\n");
 		exit(EXIT_SUCCESS);
 	}else{
-		//printf("\nDeamon.c: Starting deamon..\n");
+		printf("\nDeamon.c: Starting deamon..\n");
 		//file mode creation mask set to 0
 		umask(0);
-		//printf("Mask set.\n");
+		printf("Mask set.\n");
 		// Change current working directory to root
 		if(chdir("/") < 0){
-			logError(getlogin(),"Deamon.c: (Failed to change dir!)");
+			printf("Failed to change dir!\n");
 			exit(EXIT_FAILURE);
 		}
 
 		// Close open file descriptors
+		printf("\nClosing descriptors\n");
 		int x;
 		for(x = sysconf(_SC_OPEN_MAX); x>=0; x--){
-			close(x);
+			//close(x);
 		}
-		//printf("Closed.\n");
-		//printf("Starting to loop..\n");
+		printf("Closed.\n");
+		printf("Starting to loop..\n");
 		// Keep process alive with infinite loop
 		while(1){
-			//printf("Looping..\n");
+			printf("Looping..\n");
 			sleep(1);
 			time(&now);
 			seconds = difftime(now,mktime(nightTime)); // difference between current time and nightTime (backUpTime) in seconds
-			//printf("Time: %1.1f\n",seconds);
+			printf("Time: %1.1f\n",seconds);
 			// If seconds == 0 means we can start the back-up.
 			if(seconds == 0){
 				char path[MAXPATHLEN];
 				strcpy(path,LIVE_PATH);
 				char dest[MAXPATHLEN];
 				strcpy(dest,BACKUP_PATH);
+
 				backup(path,dest); // Make a backup
-				fileUpload();	   // Upload the modified files
+				//update(INTRANET_PATH,LIVE_PATH); // Then upload the  intranet 
+				getFileNames();
 
 			}
 		}
 	}
 }
 
-// Function to upload files to LIVE version
-void fileUpload(){
-	const char* fileNames[5000]; // stores file names
-	char intranet_path[256];	     // initial path to intranet
-	int i = 0;
-	// Receive file names
-	*fileNames = getFileNames();
-	while(fileNames[i] != NULL){
-		printf("Updating file: %s\n",fileNames[i]);
-		strcpy(intranet_path, INTRANET_PATH); // Copy the pre-defined initial path to a variable
-		strcat(intranet_path, fileNames[i]); // Add file name to the path, so it can be copied
-		printf("Intranet_path: %s",intranet_path);
-		// Clear up the end of the path
-		strtok(intranet_path,"\n");
-		// add "html" to path
-		char live_path[256];
-		strcpy(live_path, LIVE_PATH);
-		strcat(live_path,"/html");
-		update(intranet_path, live_path);    // Update the live version
-		i++;
-	}
-}

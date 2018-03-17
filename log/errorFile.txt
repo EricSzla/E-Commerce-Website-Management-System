@@ -1,0 +1,12 @@
+User: eryk
+Msg: Deamon.c: Monitor setsid() <0
+User: eryk
+Msg: Error opening event file
+User: eryk
+Msg: Error setting permissions
+User: eryk
+Msg: monitor.c: Failed to inotify_add_watch
+User: eryk
+Msg: monitor.c: Failed to inotify_add_watch
+User: eryk
+Msg: monitor.c: Failed to inotify_add_watch

@@ -1,7 +1,7 @@
 #ifndef MONITOR_H
 #define MONITOR_H
 
-#define MONITOR_PATH "var/intranet"
+#define MONITOR_PATH "/home/eryk/College/SystemsSoftware/Assignment/var/intranet/html/"
 
 #endif
 
