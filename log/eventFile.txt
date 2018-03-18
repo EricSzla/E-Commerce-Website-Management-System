@@ -1,17 +1,14 @@
 
-Event: Modified
-File: index.html
-User: eryk
-Event: Modified
-File: index.html
-User: eryk
 
 Event: Modified
 File: index.html
 User: eryk
+Timestamp: 18_03_2018
 Event: Modified
-File: updateProducts.js
+File: fetchUserInfo.js
 User: eryk
+Timestamp: 18_03_2018
 Event: Modified
-File: updateProducts.js
+File: urgentFile.txt
 User: eryk
+Timestamp: 18_03_2018

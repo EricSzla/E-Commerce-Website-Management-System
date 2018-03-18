@@ -8,6 +8,7 @@
 #include <sys/stat.h>
 
 #include "logger.h"
+#include "timestamp.h"
 
 int logError(char *usr, char *msg){
 	FILE *pFile;
@@ -48,11 +49,16 @@ int logEvent(char *event, char* file, char* user){
 			logError(getlogin(),"Error setting permissions");
 			return -1;
 		}
-		// Write to a file
+		// Create a timestamp
 		fseek(pFile,0,SEEK_END);
+		char date[DATELEN];
+		char *buff_t = date_type_string(date);
+		printf("Writing to a file\n");
+		// Write to a file
 		fprintf(pFile, "\nEvent: %s",event);
 		fprintf(pFile, "\nFile: %s", file);
 		fprintf(pFile, "\nUser: %s",user);
+		fprintf(pFile, "\nTimestamp: %s", buff_t);
 		fclose(pFile);
 	}
 }
@@ -111,10 +117,6 @@ const char* getFileNames(){
 		}
 	}
 	fclose(pFile);
-
-	// Clear the file
-	pFile = fopen(EVENT_PATH, "w");
-	pclose(pFile);
 
 	return *fileNames;
 }

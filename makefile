@@ -5,7 +5,7 @@ cfiles = daemon.c backup.c fileLocker.c timestamp.c
 headers = daemon.h backup.h fileLocker.h timestamp.h logger.h monitor.h
 monitorHeaders = monitor.h logger.h
 monitorFiles = monitor.c logger.c
-monitorObjects = monitor.o logger.o
+monitorObjects = monitor.o logger.o timestamp.o
 
 name = daemon
 DIR_OBJ = objFiles
@@ -22,9 +22,6 @@ $(DIR_OBJ)/backup.o: backup.c $(headers)
 $(DIR_OBJ)/fileLocker.o: fileLocker.c $(headers)
 	$(CC) -c fileLocker.c -o $(DIR_OBJ)/fileLocker.o
 
-$(DIR_OBJ)/timestamp.o: timestamp.c $(headers)
-	$(CC) -c timestamp.c -o $(DIR_OBJ)/timestamp.o
-
 monitor: $(monitorObjects)
 	$(CC) -o monitor $(monitorObjects) -lm
 
@@ -34,5 +31,10 @@ objFiles/monitor.o: monitor.c $(headers)
 objFiles/logger.o: logger.c $(headers)
 	$(CC) -c logger.c -o objFiles/logger.o
 
+timestamp.o: timestamp.c $(headers)
+	$(CC) -c timestamp.c -o timestamp.o
+
+objFiles/timestamp.o: timestamp.c $(headers)
+	$(CC) -c timestamp.c -o objFiles/timestamp.o
 clean:
 	rm $(name) $(objects)

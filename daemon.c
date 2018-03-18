@@ -37,8 +37,8 @@ static void back_up_daemon(){
 	double seconds;
 	time(&now);
 	nightTime = localtime(&now);
-	nightTime->tm_hour = 22;
-	nightTime->tm_min = 50;
+	nightTime->tm_hour = 18;
+	nightTime->tm_min = 35;
 	nightTime->tm_sec = 0;
 
 	pid_t pid;
@@ -100,6 +100,7 @@ static void back_up_daemon(){
 				char dest[MAXPATHLEN];
 				strcpy(dest,BACKUP_PATH);
 				backup(path,dest); // Make a backup
+				printf("Uploading files..");
 				fileUpload();	   // Upload the modified files
 
 			}

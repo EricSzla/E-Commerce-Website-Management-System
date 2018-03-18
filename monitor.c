@@ -71,19 +71,19 @@ int monitor_daemon(){
 		}else{
 
 			for(;;){
-				//printf("Looping\n");
+				printf("Looping\n");
 				if((read(fd,buf,sizeof(buf))) < 0){
 					logError(getlogin(),"monitor.c: (Read error)");
 				}
 				// set struct
 				evp = (struct inotify_event *) buf;
 				if((evp->len) > 0){
-					//printf("Modified: %s\nUser: %s\n", evp->name, getlogin());
+					printf("Modified: %s\nUser: %s\n", evp->name, getlogin());
 					char name[strlen(evp->name)+1];
 					strcpy(name,evp->name);
 					const char *extenssion = &name[strlen(name)-3];
 					if(!strcmp(extenssion,"swp") == 0){
-						//printf("Logging\n");
+						printf("Logging\n");
 						// File have been modified (or created), add it to the event log file 
 						logEvent("Modified",evp->name,getlogin());
 					}
