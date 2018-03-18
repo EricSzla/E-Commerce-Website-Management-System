@@ -1,20 +1,20 @@
 CC = gcc
 
-objects = objFiles/deamon.o objFiles/backup.o objFiles/fileLocker.o objFiles/timestamp.o objFiles/logger.o
-cfiles = deamon.c backup.c fileLocker.c timestamp.c
-headers = deamon.h backup.h fileLocker.h timestamp.h logger.h monitor.h
+objects = objFiles/daemon.o objFiles/backup.o objFiles/fileLocker.o objFiles/timestamp.o objFiles/logger.o
+cfiles = daemon.c backup.c fileLocker.c timestamp.c
+headers = daemon.h backup.h fileLocker.h timestamp.h logger.h monitor.h
 monitorHeaders = monitor.h logger.h
 monitorFiles = monitor.c logger.c
 monitorObjects = monitor.o logger.o
 
-name = deamon
+name = daemon
 DIR_OBJ = objFiles
 
-deamon: $(objects)
+daemon: $(objects)
 	$(CC) -o $(name) $(objects) -lm
 
-$(DIR_OBJ)/deamon.o: deamon.c $(headers)
-	$(CC) -c deamon.c -o $(DIR_OBJ)/deamon.o
+$(DIR_OBJ)/daemon.o: daemon.c $(headers)
+	$(CC) -c daemon.c -o $(DIR_OBJ)/daemon.o
 
 $(DIR_OBJ)/backup.o: backup.c $(headers)
 	$(CC) -c backup.c -o $(DIR_OBJ)/backup.o

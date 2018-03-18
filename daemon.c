@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include <signal.h>
 #include <time.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -9,10 +10,17 @@
 #include <sys/param.h>
 
 #include "backup.h" //  Library defined for backup
-#include "deamon.h" // Library defined for deamon
+#include "daemon.h" // Library defined for deamon
 #include "logger.h" // Library used for logging
 // Fxn prototype
 static void back_up_daemon();
+
+void sig_handler(int sig){
+	if(sig == SIGUSR1){
+		printf("Handling SUGUSR1\n");
+		fileUpload();
+	}
+}
 
 int main(){
 	back_up_daemon();
@@ -74,8 +82,10 @@ static void back_up_daemon(){
 		for(x = sysconf(_SC_OPEN_MAX); x>=0; x--){
 			close(x);
 		}
-		//printf("Closed.\n");
-		//printf("Starting to loop..\n");
+		// Signal handler
+		if(signal(SIGUSR1, sig_handler) == SIG_ERR){
+			logError(getlogin(),"deamon.c: (SIGUSR1 Error)");
+		}
 		// Keep process alive with infinite loop
 		while(1){
 			//printf("Looping..\n");
