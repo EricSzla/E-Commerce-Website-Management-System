@@ -86,7 +86,7 @@ void fileUpload();
 The following paths have to be changed, and full path have to be provided to point to the:
 
 ```C
-LIVE_PATH		- path to var/www
+LIVE_PATH	- path to var/www
 BACKUP_PATH	- path to var/backup/
 INTRANET_PATH	- path to var/intranet/html/
 ```
@@ -142,7 +142,7 @@ In order to run the program:
 ``ps –aux | grep ./monitor``
 -	run daemon using:
 ``./daemon``
--	check if the program is running using (as can be seen on Figure 8):
+-	check if the program is running using:
 ``ps -aux | grep ./daemon``
 
 # After Running
@@ -155,6 +155,7 @@ The monitor daemon will monitor any changes done to intranet/html, therefore for
 -	modify a file called index.html 
 
 we can achieve that using:
+
 ``nano fetchUserInformation.js``
 ``nano index.html``
 
